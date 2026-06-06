@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_groq_client():
-    """
+    """l
     Returns an initialized Groq client. Raises ValueError if api key is missing.
     """
     api_key = os.getenv("GROQ_API_KEY")
@@ -39,7 +39,7 @@ def extract_structure(raw_text: str) -> dict:
     )
     
     response = client.chat.completions.create(
-        model="llama3-8b-8192",
+        model="llama-3.1-8b-instant",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": f"Raw incident notes:\n{raw_text}"}
@@ -94,7 +94,7 @@ def generate_triage_brief(alert_text: str, similar_incidents: list) -> str:
     )
     
     response = client.chat.completions.create(
-        model="llama3-8b-8192",
+        model="llama-3.1-8b-instant",
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_content}
