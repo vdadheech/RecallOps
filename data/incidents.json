@@ -1,0 +1,142 @@
+[
+  {
+    "service_affected": "auth-service",
+    "symptom_pattern": "Redis OOM error in production logs",
+    "root_cause": "Session token TTL was set to 30 days instead of 30 minutes, leading to rapid key accumulation",
+    "fix_applied": "Corrected session TTL in application configuration and ran flushdb on Redis",
+    "time_to_resolve_minutes": 15
+  },
+  {
+    "service_affected": "payment-gateway",
+    "symptom_pattern": "504 Gateway Timeout during checkout spikes to 25%",
+    "root_cause": "Third-party payment processor API response time spiked from 200ms to 8000ms",
+    "fix_applied": "Implemented a 2-second timeout and fallback queue for background processing",
+    "time_to_resolve_minutes": 45
+  },
+  {
+    "service_affected": "user-api",
+    "symptom_pattern": "PostgreSQL CPU utilization at 100%, query timeouts",
+    "root_cause": "Missing index on the 'email' field in the 'users' table during a bulk user migration",
+    "fix_applied": "Created index concurrently: CREATE INDEX CONCURRENTLY idx_users_email ON users(email);",
+    "time_to_resolve_minutes": 12
+  },
+  {
+    "service_affected": "search-indexing-service",
+    "symptom_pattern": "Elasticsearch cluster yellow status and slow queries",
+    "root_cause": "Unbalanced shard allocation across nodes; one node ran out of disk space (95% usage)",
+    "fix_applied": "Deleted old log indices and rebalanced shards across the cluster",
+    "time_to_resolve_minutes": 35
+  },
+  {
+    "service_affected": "notification-service",
+    "symptom_pattern": "Push notifications failing to send, queue backlog increasing",
+    "root_cause": "Expired Apple Push Notification service (APNs) certificate",
+    "fix_applied": "Renewed the APNs certificate in the Apple Developer portal and updated the server configuration",
+    "time_to_resolve_minutes": 60
+  },
+  {
+    "service_affected": "auth-service",
+    "symptom_pattern": "Redis connection pool exhaustion / HTTP 500 errors",
+    "root_cause": "Connection pool size too small (default 10) for auth service traffic spike after deployment",
+    "fix_applied": "Rolled back deployment and bumped Redis MAX_POOL size to 100 in env variables",
+    "time_to_resolve_minutes": 9
+  },
+  {
+    "service_affected": "billing-service",
+    "symptom_pattern": "Stripe webhooks failing with 400 Bad Request",
+    "root_cause": "Invalid Stripe webhook signing secret configured after key rotation",
+    "fix_applied": "Updated STRIPE_WEBHOOK_SECRET env variable with the correct signing secret",
+    "time_to_resolve_minutes": 10
+  },
+  {
+    "service_affected": "frontend-app",
+    "symptom_pattern": "Static assets failing to load (403 Forbidden)",
+    "root_cause": "AWS S3 bucket policy changed accidentally, blocking public read access to build assets",
+    "fix_applied": "Reverted the S3 bucket policy change to restore public read access to static assets",
+    "time_to_resolve_minutes": 20
+  },
+  {
+    "service_affected": "inventory-service",
+    "symptom_pattern": "Database deadlock errors during flash sale peak traffic",
+    "root_cause": "Inconsistent locking order between update_inventory and reserve_item transactions",
+    "fix_applied": "Refactored code to ensure locks are acquired in the same alphabetical order of tables",
+    "time_to_resolve_minutes": 55
+  },
+  {
+    "service_affected": "image-processing-service",
+    "symptom_pattern": "Kubernetes Pods restarting repeatedly (OOMKilled)",
+    "root_cause": "Memory leak in Pillow image resizing logic due to unclosed file pointers",
+    "fix_applied": "Wrapped image operations in 'with' context managers to ensure file closures, and redeployed",
+    "time_to_resolve_minutes": 40
+  },
+  {
+    "service_affected": "user-api",
+    "symptom_pattern": "Slow API responses (avg latency > 2s) on user profile endpoints",
+    "root_cause": "N+1 query database issue fetching user profiles and their corresponding active sessions",
+    "fix_applied": "Updated ORM query to use select_related/preload to fetch related tables in a single query",
+    "time_to_resolve_minutes": 30
+  },
+  {
+    "service_affected": "email-delivery-service",
+    "symptom_pattern": "SendGrid emails returning 401 Unauthorized",
+    "root_cause": "SendGrid API key deleted or revoked from the console by security audit",
+    "fix_applied": "Generated a new SendGrid API key and updated the Kubernetes secrets configuration",
+    "time_to_resolve_minutes": 15
+  },
+  {
+    "service_affected": "payment-gateway",
+    "symptom_pattern": "Double billing of user accounts during checkout",
+    "root_cause": "Missing idempotency key check on payment retry mechanism in checkout endpoint",
+    "fix_applied": "Added Stripe idempotency key headers using transaction request UUIDs",
+    "time_to_resolve_minutes": 90
+  },
+  {
+    "service_affected": "websocket-gateway",
+    "symptom_pattern": "High latency and connection drops for live chat clients",
+    "root_cause": "File descriptor limit reached (1024) on Nginx load balancer nodes",
+    "fix_applied": "Increased worker_rlimit_nofile to 65535 and connection limits in nginx.conf",
+    "time_to_resolve_minutes": 25
+  },
+  {
+    "service_affected": "reporting-service",
+    "symptom_pattern": "Nightly PDF generation jobs failing with write errors",
+    "root_cause": "Local disk storage full on worker nodes due to accumulated temp files in /tmp",
+    "fix_applied": "Added a cron job to clean up temporary PDF files older than 24 hours",
+    "time_to_resolve_minutes": 18
+  },
+  {
+    "service_affected": "auth-service",
+    "symptom_pattern": "Cannot log in, token verification failing",
+    "root_cause": "System clock drift (4 minutes behind) on auth-02 server causing JWT validation to fail",
+    "fix_applied": "Restarted chronyd service to force NTP sync on auth-02 server",
+    "time_to_resolve_minutes": 8
+  },
+  {
+    "service_affected": "recommendation-engine",
+    "symptom_pattern": "Recommendations returned are empty (default fallback used)",
+    "root_cause": "Invalid path for ML model file after continuous integration runner update",
+    "fix_applied": "Fixed model load path in config/recommend.json to point to the correct volume mount",
+    "time_to_resolve_minutes": 50
+  },
+  {
+    "service_affected": "user-api",
+    "symptom_pattern": "CORS errors blocking web application requests",
+    "root_cause": "Wildcard CORS config overwritten by strict local environment config in latest master build",
+    "fix_applied": "Reverted the CORS configuration change and re-added allowed origins in main.py",
+    "time_to_resolve_minutes": 14
+  },
+  {
+    "service_affected": "log-aggregation-service",
+    "symptom_pattern": "Logs are not visible in dashboard, ingestion latency high",
+    "root_cause": "Kafka topic partition mismatch resulting in single partition handling 90% of traffic",
+    "fix_applied": "Increased partition count from 3 to 12 and re-keyed messages by service name",
+    "time_to_resolve_minutes": 110
+  },
+  {
+    "service_affected": "monitoring-daemon",
+    "symptom_pattern": "PagerDuty alerts not firing for CPU usage threshold alerts",
+    "root_cause": "Invalid routing key configured in PagerDuty API integration settings",
+    "fix_applied": "Restored correct integration routing key from production credential store",
+    "time_to_resolve_minutes": 12
+  }
+]
