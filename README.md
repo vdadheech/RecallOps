@@ -79,7 +79,7 @@ HINDSIGHT_PIPELINE_ID=your_hindsight_pipeline_id_here
 streamlit run app.py
 ```
 
-The app will open at `http://localhost:8501`.
+The app will open at `http://localhost:8501`. Or visit the live deployment at [retrospect-ai-72w3c49wtp4s882f6xoxb4.streamlit.app](https://retrospect-ai-72w3c49wtp4s882f6xoxb4.streamlit.app/).
 
 ---
 
