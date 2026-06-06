@@ -2,7 +2,7 @@
 
 **RecallOps** is an intelligent, self-learning incident management platform that helps Site Reliability Engineers (SREs) and DevOps teams dramatically reduce Mean Time to Resolution (MTTR). By capturing chaotic post-mortem notes, structuring them with LLMs, and indexing them semantically via [Hindsight agent memory](https://vectorize.io/what-is-agent-memory), RecallOps acts as a persistent memory bank that tells you exactly how similar alerts were resolved in the past.
 
-🚀 **[Live Demo → retrospect-ai-72w3c49wtp4s882f6xoxb4.streamlit.app]([https://retrospect-ai-72w3c49wtp4s882f6xoxb4.streamlit.app/](https://recall-ops-72w3c49wtp4s882f6xoxb4.streamlit.app/))**
+🚀 **[Live Demo → recall-ops-72w3c49wtp4s882f6xoxb4.streamlit.app](https://recall-ops-72w3c49wtp4s882f6xoxb4.streamlit.app/)**
 
 ---
 
@@ -79,7 +79,7 @@ HINDSIGHT_PIPELINE_ID=your_hindsight_pipeline_id_here
 streamlit run app.py
 ```
 
-The app will open at `http://localhost:8501`. Or visit the live deployment at [retrospect-ai-72w3c49wtp4s882f6xoxb4.streamlit.app](https://retrospect-ai-72w3c49wtp4s882f6xoxb4.streamlit.app/).
+The app will open at `http://localhost:8501`. Or visit the live deployment at [recall-ops-72w3c49wtp4s882f6xoxb4.streamlit.app](https://recall-ops-72w3c49wtp4s882f6xoxb4.streamlit.app/).
 
 ---
 
